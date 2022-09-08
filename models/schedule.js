@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Schedule.belongsTo(models.User, { foreginKey: 'userId' })
-      Schedule.hasMany(models.Day, { foreginKey: 'scheduleId' })
+      Schedule.belongsTo(models.User, { foreignKey: 'userId' })
+      Schedule.hasMany(models.Day, { foreignKey: 'scheduleId' })
     }
   }
   Schedule.init(
