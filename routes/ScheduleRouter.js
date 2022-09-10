@@ -4,7 +4,7 @@ const middleware = require('../middleware')
 
 Router.get('/', controller.GetSchedules)
 
-Router.get('/:schedule_id', controller.GetScheduleById)
+Router.get('/:user_id', controller.GetSchedulesByUserId)
 
 Router.post(
   '/:user_id',

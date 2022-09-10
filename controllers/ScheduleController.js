@@ -2,17 +2,21 @@ const { Schedule } = require('../models')
 
 const GetSchedules = async (req, res) => {
   try {
-    const Schedules = await Schedule.findAll()
-    res.send(Schedules)
+    const schedules = await Schedule.findAll({})
+    res.send(schedules)
   } catch (error) {
     throw error
   }
 }
 
-const GetScheduleById = async (req, res) => {
+const GetSchedulesByUserId = async (req, res) => {
   try {
-    let Schedule = await Schedule.findByPk(req.params.Schedule_id)
-    res.send(Schedule)
+    const schedules = await Schedule.findAll({
+      where: {
+        userId: req.params.user_id
+      }
+    })
+    res.send(schedules)
   } catch (error) {
     throw error
   }
@@ -20,8 +24,8 @@ const GetScheduleById = async (req, res) => {
 
 const CreateSchedule = async (req, res) => {
   try {
-    let Schedule = await Schedule.create({ ...req.body })
-    res.send(Schedule)
+    let schedules = await Schedule.create({ ...req.body })
+    res.send(schedules)
   } catch (error) {
     throw error
   }
@@ -29,9 +33,9 @@ const CreateSchedule = async (req, res) => {
 
 const UpdateSchedule = async (req, res) => {
   try {
-    let ScheduleId = parseInt(req.params.Schedule_id)
+    let scheduleId = parseInt(req.params.Schedule_id)
     let updatedSchedule = await Schedule.update(req.body, {
-      where: { id: ScheduleId },
+      where: { id: scheduleId },
       returning: true
     })
     res.send(updatedSchedule)
@@ -42,9 +46,9 @@ const UpdateSchedule = async (req, res) => {
 
 const DeleteSchedule = async (req, res) => {
   try {
-    let ScheduleId = parseInt(req.params.Schedule_id)
-    await Schedule.destroy({ where: { id: ScheduleId } })
-    res.send({ message: `Deleted Schedule with an id of ${ScheduleId}` })
+    let scheduleId = parseInt(req.params.Schedule_id)
+    await Schedule.destroy({ where: { id: scheduleId } })
+    res.send({ message: `Deleted Schedule with an id of ${scheduleId}` })
   } catch (error) {
     throw error
   }
@@ -52,7 +56,7 @@ const DeleteSchedule = async (req, res) => {
 
 module.exports = {
   GetSchedules,
-  GetScheduleById,
+  GetSchedulesByUserId,
   CreateSchedule,
   UpdateSchedule,
   DeleteSchedule
