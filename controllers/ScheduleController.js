@@ -24,7 +24,7 @@ const GetSchedulesByUserId = async (req, res) => {
 
 const CreateSchedule = async (req, res) => {
   try {
-    let schedules = await Schedule.create({ ...req.body })
+    const schedules = await Schedule.create({ ...req.body })
     res.send(schedules)
   } catch (error) {
     throw error
@@ -33,12 +33,14 @@ const CreateSchedule = async (req, res) => {
 
 const UpdateSchedule = async (req, res) => {
   try {
-    let scheduleId = parseInt(req.params.Schedule_id)
-    let updatedSchedule = await Schedule.update(req.body, {
-      where: { id: scheduleId },
-      returning: true
-    })
-    res.send(updatedSchedule)
+    const schedules = await Schedule.update(
+      { ...req.body },
+      {
+        where: { id: req.params.schedule_id },
+        returning: true
+      }
+    )
+    res.send(schedules)
   } catch (error) {
     throw error
   }
@@ -46,9 +48,12 @@ const UpdateSchedule = async (req, res) => {
 
 const DeleteSchedule = async (req, res) => {
   try {
-    let scheduleId = parseInt(req.params.Schedule_id)
-    await Schedule.destroy({ where: { id: scheduleId } })
-    res.send({ message: `Deleted Schedule with an id of ${scheduleId}` })
+    await Schedule.destroy({ where: { id: req.params.schedule_id } })
+    res.send({
+      msg: 'Schedule has been deleted',
+      payload: req.params.schedule_id,
+      status: 'Ok'
+    })
   } catch (error) {
     throw error
   }

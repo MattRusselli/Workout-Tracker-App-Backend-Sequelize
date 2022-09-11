@@ -4,7 +4,7 @@ const middleware = require('../middleware')
 
 Router.get('/', controller.GetExercises)
 
-Router.get('/:exercise_id', controller.GetExerciseById)
+Router.get('/:day_id', controller.GetExerciseByDayId)
 
 Router.post(
   '/:day_id',

@@ -12,7 +12,7 @@ const GetUsers = async (req, res) => {
 const GetUserById = async (req, res) => {
   console.log(req.params)
   try {
-    let user = await User.findByPk(req.params.user_id)
+    const user = await User.findOne({ where: { id: req.params.id } })
     res.send(user)
   } catch (error) {
     throw error

@@ -1,8 +1,19 @@
-const Router = require('express').Router()
+const router = require('express').Router()
 const controller = require('../controllers/UserController')
+const middleware = require('../middleware')
 
-Router.get('/', controller.GetUsers)
+router.get(
+  '/',
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.GetUsers
+)
 
-Router.get('/:user_id', controller.GetUserById)
+router.get(
+  '/:user_id',
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.GetUserById
+)
 
-module.exports = Router
+module.exports = router

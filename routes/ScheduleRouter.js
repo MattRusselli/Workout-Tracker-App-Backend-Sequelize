@@ -1,30 +1,30 @@
-const Router = require('express').Router()
+const router = require('express').Router()
 const controller = require('../controllers/ScheduleController')
 const middleware = require('../middleware')
 
-Router.get('/', controller.GetSchedules)
+router.get('/', controller.GetSchedules)
 
-Router.get('/:user_id', controller.GetSchedulesByUserId)
+router.get('/:user_id', controller.GetSchedulesByUserId)
 
-Router.post(
+router.post(
   '/:user_id',
   middleware.stripToken,
   middleware.verifyToken,
   controller.CreateSchedule
 )
 
-Router.put(
+router.put(
   '/:schedule_id',
   middleware.stripToken,
   middleware.verifyToken,
   controller.UpdateSchedule
 )
 
-Router.delete(
+router.delete(
   '/:schedule_id',
   middleware.stripToken,
   middleware.verifyToken,
   controller.DeleteSchedule
 )
 
-module.exports = Router
+module.exports = router

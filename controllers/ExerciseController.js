@@ -2,18 +2,22 @@ const { Exercise } = require('../models')
 
 const GetExercises = async (req, res) => {
   try {
-    const Exercises = await Exercise.findAll()
-    res.send(Exercises)
+    const exercises = await Exercise.findAll({})
+    res.send(exercises)
   } catch (error) {
     throw error
   }
 }
 
-const GetExerciseById = async (req, res) => {
+const GetExerciseByDayId = async (req, res) => {
   console.log(req.params)
   try {
-    let Exercise = await Exercise.findByPk(req.params.Exercise_id)
-    res.send(Exercise)
+    const exercises = await Exercise.findAll({
+      where: {
+        dayId: req.params.day_id
+      }
+    })
+    res.send(exercises)
   } catch (error) {
     throw error
   }
@@ -21,14 +25,8 @@ const GetExerciseById = async (req, res) => {
 
 const CreateExercise = async (req, res) => {
   try {
-    let dayId = parseInt(req.params.day_id)
-
-    let ExerciseBody = {
-      dayId,
-      ...req.body
-    }
-    let Exercise = await Exercise.create(ExerciseBody)
-    res.send(Exercise)
+    const exercise = await Exercise.create({ ...req.body })
+    res.send(exercise)
   } catch (error) {
     throw error
   }
@@ -36,12 +34,14 @@ const CreateExercise = async (req, res) => {
 
 const UpdateExercise = async (req, res) => {
   try {
-    let ExerciseId = parseInt(req.params.Exercise_id)
-    let updatedExercise = await Exercise.update(req.body, {
-      where: { id: ExerciseId },
-      returning: true
-    })
-    res.send(updatedExercise)
+    const exercise = await Exercise.update(
+      { ...req.body },
+      {
+        where: { id: req.params.exercise_id },
+        returning: true
+      }
+    )
+    res.send(exercise)
   } catch (error) {
     throw error
   }
@@ -49,9 +49,12 @@ const UpdateExercise = async (req, res) => {
 
 const DeleteExercise = async (req, res) => {
   try {
-    let ExerciseId = parseInt(req.params.Exercise_id)
-    await Exercise.destroy({ where: { id: ExerciseId } })
-    res.send({ message: `Deleted Exercise with an id of ${ExerciseId}` })
+    await Exercise.destroy({ where: { id: req.params.exercise_id } })
+    res.send({
+      msg: 'Exercise has been deleted',
+      payload: req.params.exercise_id,
+      status: 'Ok'
+    })
   } catch (error) {
     throw error
   }
@@ -59,7 +62,7 @@ const DeleteExercise = async (req, res) => {
 
 module.exports = {
   GetExercises,
-  GetExerciseById,
+  GetExerciseByDayId,
   CreateExercise,
   UpdateExercise,
   DeleteExercise

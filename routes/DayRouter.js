@@ -1,30 +1,30 @@
-const Router = require('express').Router()
+const router = require('express').Router()
 const controller = require('../controllers/DayController')
 const middleware = require('../middleware')
 
-Router.get('/', controller.GetDays)
+router.get('/', controller.GetDays)
 
-Router.get('/:day_id', controller.GetDayById)
+router.get('/:schedule_id', controller.GetDayByScheduleId)
 
-Router.post(
+router.post(
   '/:schedule_id',
   middleware.stripToken,
   middleware.verifyToken,
   controller.CreateDay
 )
 
-Router.put(
+router.put(
   '/:day_id',
   middleware.stripToken,
   middleware.verifyToken,
   controller.UpdateDay
 )
 
-Router.delete(
+router.delete(
   '/:day_id',
   middleware.stripToken,
   middleware.verifyToken,
   controller.DeleteDay
 )
 
-module.exports = Router
+module.exports = router

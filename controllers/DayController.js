@@ -2,17 +2,18 @@ const { Day, Workout } = require('../models')
 
 const GetDays = async (req, res) => {
   try {
-    const days = await Day.findAll()
+    const days = await Day.findAll({})
     res.send(days)
   } catch (error) {
     throw error
   }
 }
 
-const GetDayById = async (req, res) => {
-  console.log(req.params)
+const GetDayByScheduleId = async (req, res) => {
   try {
-    let day = await Day.findByPk(req.params.day_id)
+    const day = await Day.findAll({
+      where: { scheduleId: req.params.schedule_id }
+    })
     res.send(day)
   } catch (error) {
     throw error
@@ -21,13 +22,7 @@ const GetDayById = async (req, res) => {
 
 const CreateDay = async (req, res) => {
   try {
-    let scheduleId = parseInt(req.params.schedule_id)
-
-    let dayBody = {
-      scheduleId,
-      ...req.body
-    }
-    let day = await Day.create(dayBody)
+    const day = await Day.create({ ...req.body })
     res.send(day)
   } catch (error) {
     throw error
@@ -36,11 +31,13 @@ const CreateDay = async (req, res) => {
 
 const UpdateDay = async (req, res) => {
   try {
-    let dayId = parseInt(req.params.day_id)
-    let updatedDay = await Day.update(req.body, {
-      where: { id: dayId },
-      returning: true
-    })
+    const day = await Day.update(
+      { ...req.body },
+      {
+        where: { id: req.params.day_id },
+        returning: true
+      }
+    )
     res.send(updatedDay)
   } catch (error) {
     throw error
@@ -49,9 +46,12 @@ const UpdateDay = async (req, res) => {
 
 const DeleteDay = async (req, res) => {
   try {
-    let dayId = parseInt(req.params.day_id)
-    await Day.destroy({ where: { id: dayId } })
-    res.send({ message: `Deleted day with an id of ${dayId}` })
+    await Day.destroy({ where: { id: req.params.day_id } })
+    res.send({
+      msg: 'Day has been deleted',
+      payload: req.params.day_id,
+      status: 'Ok'
+    })
   } catch (error) {
     throw error
   }
@@ -59,7 +59,7 @@ const DeleteDay = async (req, res) => {
 
 module.exports = {
   GetDays,
-  GetDayById,
+  GetDayByScheduleId,
   CreateDay,
   UpdateDay,
   DeleteDay
