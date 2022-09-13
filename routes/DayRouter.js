@@ -6,25 +6,12 @@ router.get('/', controller.GetDays)
 
 router.get('/:schedule_id', controller.GetDayByScheduleId)
 
-router.post(
-  '/:schedule_id',
-  middleware.stripToken,
-  middleware.verifyToken,
-  controller.CreateDay
-)
+router.get('/:day_id', controller.GetDayById)
 
-router.put(
-  '/:day_id',
-  middleware.stripToken,
-  middleware.verifyToken,
-  controller.UpdateDay
-)
+router.post('/:schedule_id', controller.CreateDay)
 
-router.delete(
-  '/:day_id',
-  middleware.stripToken,
-  middleware.verifyToken,
-  controller.DeleteDay
-)
+router.put('/:day_id', controller.UpdateDay)
+
+router.delete('/:day_id', controller.DeleteDay)
 
 module.exports = router

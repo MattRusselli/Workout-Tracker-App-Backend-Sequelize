@@ -6,25 +6,10 @@ Router.get('/', controller.GetExercises)
 
 Router.get('/:day_id', controller.GetExerciseByDayId)
 
-Router.post(
-  '/:day_id',
-  middleware.stripToken,
-  middleware.verifyToken,
-  controller.CreateExercise
-)
+Router.post('/:day_id', controller.CreateExercise)
 
-Router.put(
-  '/:exercise_id',
-  middleware.stripToken,
-  middleware.verifyToken,
-  controller.UpdateExercise
-)
+Router.put('/:exercise_id', controller.UpdateExercise)
 
-Router.delete(
-  '/:exercise_id',
-  middleware.stripToken,
-  middleware.verifyToken,
-  controller.DeleteExercise
-)
+Router.delete('/:exercise_id', controller.DeleteExercise)
 
 module.exports = Router

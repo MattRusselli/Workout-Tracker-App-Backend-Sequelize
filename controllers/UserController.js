@@ -1,9 +1,11 @@
-const { User, Schedule, Day } = require('../models')
+const { User, Schedule } = require('../models')
 
 const GetUsers = async (req, res) => {
   try {
-    const users = await User.findAll()
-    res.send(users)
+    const user = await User.findAll({
+      include: { model: Schedule, attributes: ['id'] }
+    })
+    res.send(user)
   } catch (error) {
     throw error
   }
@@ -12,7 +14,9 @@ const GetUsers = async (req, res) => {
 const GetUserById = async (req, res) => {
   console.log(req.params)
   try {
-    const user = await User.findOne({ where: { id: req.params.id } })
+    const user = await User.findByPk(req.params.user_id, {
+      include: { model: Schedule, attributes: ['id'] }
+    })
     res.send(user)
   } catch (error) {
     throw error

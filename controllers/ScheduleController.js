@@ -1,8 +1,23 @@
-const { Schedule } = require('../models')
+const { Schedule, Day } = require('../models')
 
 const GetSchedules = async (req, res) => {
   try {
-    const schedules = await Schedule.findAll({})
+    const schedules = await Schedule.findAll({
+      include: { model: Day, attributes: ['id'] }
+    })
+    res.send(schedules)
+  } catch (error) {
+    throw error
+  }
+}
+
+const GetScheduleById = async (req, res) => {
+  console.log(req.params)
+  try {
+    const schedules = await Schedule.findAll({
+      where: { id: req.params.schedule_id },
+      include: { model: Day, attributes: ['id'] }
+    })
     res.send(schedules)
   } catch (error) {
     throw error
@@ -62,6 +77,7 @@ const DeleteSchedule = async (req, res) => {
 module.exports = {
   GetSchedules,
   GetSchedulesByUserId,
+  GetScheduleById,
   CreateSchedule,
   UpdateSchedule,
   DeleteSchedule

@@ -4,27 +4,14 @@ const middleware = require('../middleware')
 
 router.get('/', controller.GetSchedules)
 
-router.get('/:user_id', controller.GetSchedulesByUserId)
+router.get('/schedid/:schedule_id', controller.GetScheduleById)
 
-router.post(
-  '/:user_id',
-  middleware.stripToken,
-  middleware.verifyToken,
-  controller.CreateSchedule
-)
+router.get('/userid/:user_id', controller.GetSchedulesByUserId)
 
-router.put(
-  '/:schedule_id',
-  middleware.stripToken,
-  middleware.verifyToken,
-  controller.UpdateSchedule
-)
+router.post('/:user_id', controller.CreateSchedule)
 
-router.delete(
-  '/:schedule_id',
-  middleware.stripToken,
-  middleware.verifyToken,
-  controller.DeleteSchedule
-)
+router.put('/:schedule_id', controller.UpdateSchedule)
+
+router.delete('/:schedule_id', controller.DeleteSchedule)
 
 module.exports = router
